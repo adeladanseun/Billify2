@@ -1,0 +1,248 @@
+AWS TO BE USED (TEST DATABASE AND EMAIL SERVER ALREADY WORKING FOR DEVELOPMENT)
+MODIFY TO ALSO WORK FOR TICKET GENERATION (CAPABLE OF EXPIRATION)
+CONSIDER ADDING THE ABILITY TO PAY FOR A SERVICE OFFERED ON THE SITE AND HANDLE RECEIPT (PROPABLY STRIPE)
+TWO TYPE OF PEOPLE (PRODUCT OWNER / EVENT PLANNER, NORMAL LOGGED IN USERS)
+
+MODELS 
+    DEFAULTS:
+        BASE CLASS: 
+            date_created
+            last_modified
+
+        DISCOUNT_TABLE
+            Product / Event
+            quantity
+            discount #number between 0 and 1
+            is_active #discount only applies if active and so can be created anytime but not made active
+
+            #functions
+            get_discount(quantity): checks is_active and returns 0 if false and discount otherwise
+
+
+    USER:
+        Name 
+        Email (important for website email functionality)
+        Age (optional to advice user against buying a ticket outside recommended age group)
+
+
+    EVENT: 
+        Name
+        location
+        Date and Time
+        Pricing(membership e.g VIP, REGULAR, discount if available)
+        Conditions: Dress code, ...other (In regular text)
+        Image (if any for a poster style)
+        InterestedPeople - linked to INTERESTEDPEOPLECOUNT so that last_modified is not reset when event object is saved
+        TicketExpiration - optional
+        age-group - optional (if set, logged in users purchasing the ticket should be alerted if they are not in the age group)
+        default_ticket_template
+        organiser
+
+    INTERESTEDPEOPLECOUNT:
+        num_interested_people (for ranking of most popular events)
+
+        TICKET:
+             Event name Event Date and Time Event Location
+            User or Name
+            email_to_send #common to TICKET and PURCHASE for invoice
+            MEMBERSHIP (VIP, REGULAR, ...)
+            Date Purchased
+            Background-image (if any for a poster style)
+            TicketExpiration (valid till) - if present
+
+            MAIN WORK IN TICKET GENERATION AND I WANT MULTIPLE FORMATS TO EXIST
+
+
+    PRODUCT: #many-to-many relationship with users through USERPRODUCT
+        Product name
+        Product Actual Pricing (discount if available) changing discount does not change for those already set
+        Images
+        Discount many-to-many with PRODUCT matching amount of purchase with a percent discount through DISCOUNT_TABLE
+        Owner
+
+
+        
+        INDIVIDUAL_PURCHASE not directly accessible from views but dynamically created as needed by PURCHASE
+            Product 
+            quantity
+            discount - generated once looking into discount table and rechecked only if order quantity or product is modified or manually changed by admin
+            price_given_discount actively computed
+
+            #decorator
+            onsave - signal interceptor #compute discount given the Product and the quantity now present
+
+        
+        PURCHASE
+            Name not connected to a user object
+            purchases one-to-many with INDIVIDUAL_PURCHASE
+            total #actively computed from price_given_discount
+            email_to_send #common to both TICKET and PURCHASE for invoice
+            default_invoice_template
+
+            ability to add INDIVIDUAL_PURCHASE
+
+            #functions
+            generates invoice (set generated_invoice the first time and then check if set) combining all products, prices and discounts 
+
+            
+            
+            MAIN WORK IS INVOICE GENERATION AND I WANT MULTIPLE FORMATS TO EXIST
+
+APIVIEWS
+    user creation
+    user login
+    show ticket or purchase (given id)
+
+    @loginrequired
+        user dashboard
+
+        @sends files (images)
+        @owner/organiser linked and confirmed
+            #c-u-d = create, update, delete
+            product c-u-d
+                u [add/remove/modify individual purchase]
+            event c-u-d
+            discount c-u-d
+            model_template c-u-d
+            
+            @emailable
+                ticket c-u-d (ticket emailed)
+                purchase c-u-d (invoice emailed)
+
+FRONTEND
+    account creation form 
+    login form
+    find ticket or invoice (enter identifier)
+    dashboard - for logged in users
+
+    @details - contains means to edit information immediately even images
+    @contains means to generate ticket/invoice, download and or send to the email connected to the (ticket/invoice) email or Organiser
+        event page
+        product page
+
+
+
+1. Key Information to Gather
+-----Technical
+User authentication: Registration, login, password reset.
+Receipt generation: Unique receipt numbers, date/time, customer info, itemized list, totals, taxes, payment method.
+Database models: Users, Customers, Receipts, Items/Products, Payments.
+PDF/Printable receipts: Use libraries like WeasyPrint, xhtml2pdf, or ReportLab. (IronPDF or Playwright found recommended due to html to pdf conversion)
+Email integration: Send receipts to customers.
+Admin dashboard: Manage users, view receipts, analytics.
+API endpoints: For integration with other systems (optional).
+Security: Data protection, HTTPS, user permissions.
+Responsive UI: Works on desktop and mobile.
+-----Non-Technical
+Target users: Small businesses, freelancers, shops.
+User journey: How users sign up, create receipts, send/download them.
+Compliance: Local tax laws, data privacy.
+Branding: Logo, color scheme, business info on receipts. ['FBFBFB', '31081F', '084B83', '4A5240', 'F4E409']
+Support: Help pages, contact info.
+
+
+
+2. Suggested Layout
+Landing Page
+Brief intro, features, call-to-action (CTA) to sign up.
+Screenshots or demo video.
+Dashboard (after login)
+Quick stats (number of receipts, recent activity).
+Button to create new receipt.
+List of recent receipts (with view/download/send options).
+Create Receipt Page
+Customer info (name, email, phone, address).
+Itemized list (item, quantity, price, subtotal).
+Tax, discount, total.
+Payment method.
+Notes.
+Save, download PDF, or send via email.
+Receipts List Page
+Table of all receipts (date, customer, amount, status).
+Search/filter options.
+Settings/Profile
+Business info (name, logo, address, contact).
+Email settings.
+Password change.
+Admin Panel
+Manage users, view analytics, export data.
+
+
+3. Useful Links & References
+Wave Receipts https://www.waveapps.com/receipts
+Zoho Invoice https://www.zoho.com/invoice/
+Invoice Generator https://invoice-generator.com/
+Receitify https://receitify.com/
+Stripe Receipts Example https://stripe.com/docs/receipts
+
+
+wireframe
+1. landing page
++-------------------------------------------------------------+
+| [Logo]        [Home] [Features] [Pricing] [Login] [Sign Up] |
++-------------------------------------------------------------+
+|          Welcome to Receiptify!                             |
+|  [Brief intro about the service]                            |
+|  [CTA Button: Get Started]                                  |
+|  [Screenshot or Demo Video]                                 |
++-------------------------------------------------------------+
+| [Footer: Links, Contact, Socials]                           |
++-------------------------------------------------------------+
+
+2. sidebar after login
++-------------------+-----------------------------------------+
+|  Sidebar:         |  [Header: Welcome, User Profile]        |
+|  Dashboard        |-----------------------------------------|
+|  Create Receipt   |  [Quick Stats: Receipts, Customers, $]  |
+|  Receipts         |                                         |
+|  Customers        |  [Button: Create New Receipt]           |
+|  Settings         |                                         |
+|  Logout           |  [Recent Receipts Table/List]           |
++-------------------+-----------------------------------------+
+
+3. Create Receipt Page
++-------------------------------------------------------------+
+| [Back to Dashboard]                                         |
+|-------------------------------------------------------------|
+| Customer Info:                                              |
+|  Name:  [__________]  Email:  [__________]                  |
+|  Phone: [__________] Address: [__________]                  |
+|-------------------------------------------------------------|
+| Items:                                                      |
+|  | Item        | Qty | Price | Subtotal | [Add/Remove Row]  |
+|  |-------------|-----|-------|----------|                   |
+|  |             |     |       |          |                   |
+|-------------------------------------------------------------|
+| Tax: [__%]  Discount: [__%]                                 |
+| Total: $[_____]                                             |
+| Payment Method: [Dropdown]                                  |
+| Notes: [____________________]                               |
+|-------------------------------------------------------------|
+| [Save] [Download PDF] [Send via Email]                      |
++-------------------------------------------------------------+
+
+4. Receipts List Page
++-------------------------------------------------------------------------+
+| [Search/Filter Bar]                                                     |
+|-------------------------------------------------------------------------|
+| | Date      | Customer | Amount | Status | Actions (View/Send/Download) |
+| |-----------|----------|--------|--------|------------------------------|
+| |           |          |        |        |                              |
++-------------------------------------------------------------------------+
+
+5. Settings/Profile Page
++-------------------------------------------------------------+
+| Business Info:                                              |
+|  Name: [__________]  Logo: [Upload]                         |
+|  Address: [__________]  Contact: [__________]               |
+| Email Settings: [__________]                                |
+| Change Password: [__________]                               |
+| [Save Changes]                                              |
++-------------------------------------------------------------+
+
+6. Admin Panel
++-------------------------------------------------------------+
+| [User Management Table]                                     |
+| [Analytics: Charts/Stats]                                   |
+| [Export Data Button]                                        |
++-------------------------------------------------------------+

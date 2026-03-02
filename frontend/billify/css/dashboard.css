@@ -1,0 +1,136 @@
+.receipts .card-icon {
+  background: rgba(67, 97, 238, 0.2);
+  color: var(--primary);
+}
+.transactions .card-icon {
+  background: rgba(76, 201, 240, 0.2);
+  color: var(--success);
+}
+.events .card-icon {
+  background: rgba(248, 150, 30, 0.2);
+  color: var(--warning);
+}
+.products .card-icon {
+  background: rgba(247, 37, 133, 0.2);
+  color: var(--danger);
+}
+
+.card h3 {
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+
+.card p {
+  color: var(--gray);
+  font-size: 14px;
+}
+
+/* Content Sections */
+.content-section {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.btn {
+  padding: 8px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--secondary);
+}
+
+/* Table Styles */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid var(--light-gray);
+}
+
+.data-table th {
+  background: var(--light);
+  font-weight: 600;
+}
+
+.data-table tr:hover {
+  background: #f8f9fa;
+}
+
+.status {
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-completed {
+  background: rgba(76, 201, 240, 0.2);
+  color: var(--success);
+}
+
+.status-pending {
+  background: rgba(248, 150, 30, 0.2);
+  color: var(--warning);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .main-content {
+    grid-column: 1;
+  }
+
+  .dashboard-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+}

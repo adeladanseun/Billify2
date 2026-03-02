@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Billify - Events Management</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/events.css" />
+    <link rel="stylesheet" href="css/calender.css" />
+    <script src="js/calender.js" defer></script>
+    <script src="js/events.js" defer></script>
+    <script src="js/common.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo">
+          <h1><i class="fas fa-receipt"></i> Billify</h1>
+        </div>
+        <a href="#" class="nav-item"> <i class="fas fa-home"></i> Dashboard </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-receipt"></i> Receipts
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-exchange-alt"></i> Transactions
+        </a>
+        <a href="#" class="nav-item active">
+          <i class="fas fa-calendar-alt"></i> Events
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-box"></i> Products </a>
+        <a href="#" class="nav-item"> <i class="fas fa-cog"></i> Settings </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="header" id="page_header">
+          <h2>Events Management</h2>
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search events..." />
+          </div>
+          <div class="user-info">
+            <div class="notifications">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="user-avatar">JD</div>
+            <div class="user-details">
+              <h4 class="user-name">John Doe</h4>
+              <p class="user-role">Event Manager</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button class="btn btn-primary" id="createEventBtn">
+            <i class="fas fa-plus"></i> Create New Event
+          </button>
+          <button class="btn btn-success" id="generateReportBtn">
+            <i class="fas fa-file-export"></i> Generate Report
+          </button>
+          <button class="btn btn-danger" id="deleteSelectedBtn">
+            <i class="fas fa-trash"></i> Delete Selected
+          </button>
+        </div>
+
+        <!-- Events Dashboard Cards -->
+        <div class="dashboard-cards events-dashboard-cards">
+          <div class="card upcoming">
+            <div class="card-header">
+              <div>
+                <h3 id="upcoming_events_count">12</h3>
+                <p>Upcoming Events</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-calendar-plus"></i>
+              </div>
+            </div>
+            <p>
+              <i class="fas fa-arrow-up"></i>
+              <span id="event_count_this_week">3</span> new events this week
+            </p>
+          </div>
+
+          <div class="card ongoing">
+            <div class="card-header">
+              <div>
+                <h3 id="ongoing_events_count">4</h3>
+                <p>Ongoing Events</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-running"></i>
+              </div>
+            </div>
+            <p>Active right now</p>
+          </div>
+
+          <div class="card completed">
+            <div class="card-header">
+              <div>
+                <h3 id="completed_events_count">28</h3>
+                <p>Completed Events</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-check-circle"></i>
+              </div>
+            </div>
+            <p style="display: none">Last 30 days</p>
+          </div>
+
+          <div class="card tickets">
+            <div class="card-header">
+              <div>
+                <h3>unset</h3>
+                <p>Tickets Sold</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-ticket-alt"></i>
+              </div>
+            </div>
+            <!-- <p><i class="fas fa-arrow-up"></i> 15% increase</p> -->
+          </div>
+        </div>
+
+        <!-- Events Calendar -->
+        <!-- <div class="events-calendar">
+          <div class="calendar-header">
+            <h3>October 2023</h3>
+            <div class="calendar-navigation">
+              <button id="prevMonth">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button id="todayBtn">Today</button>
+              <button id="nextMonth">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+          <div class="calendar-grid">
+            <div class="calendar-day">Sun</div>
+            <div class="calendar-day">Mon</div>
+            <div class="calendar-day">Tue</div>
+            <div class="calendar-day">Wed</div>
+            <div class="calendar-day">Thu</div>
+            <div class="calendar-day">Fri</div>
+            <div class="calendar-day">Sat</div>
+
+            
+            <div class="calendar-date has-event">
+              1
+              <div class="event-indicator"></div>
+            </div>
+            <div class="calendar-date">2</div>
+            <div class="calendar-date">3</div>
+            <div class="calendar-date">4</div>
+            <div class="calendar-date">5</div>
+            <div class="calendar-date has-event">
+              6
+              <div class="event-indicator ongoing"></div>
+            </div>
+            <div class="calendar-date">7</div>
+            <div class="calendar-date">8</div>
+            <div class="calendar-date">9</div>
+            <div class="calendar-date today">
+              10
+              <div class="event-indicator"></div>
+            </div>
+            <div class="calendar-date has-event">
+              11
+              <div class="event-indicator"></div>
+            </div>
+            <div class="calendar-date">12</div>
+            <div class="calendar-date">13</div>
+            <div class="calendar-date">14</div>
+            <div class="calendar-date">15</div>
+            <div class="calendar-date has-event">
+              16
+              <div class="event-indicator completed"></div>
+            </div>
+            <div class="calendar-date">17</div>
+            <div class="calendar-date">18</div>
+            <div class="calendar-date">19</div>
+            <div class="calendar-date">20</div>
+            <div class="calendar-date">21</div>
+            <div class="calendar-date has-event">
+              22
+              <div class="event-indicator"></div>
+            </div>
+            <div class="calendar-date">23</div>
+            <div class="calendar-date">24</div>
+            <div class="calendar-date has-event">
+              25
+              <div class="event-indicator"></div>
+            </div>
+            <div class="calendar-date">26</div>
+            <div class="calendar-date">27</div>
+            <div class="calendar-date">28</div>
+            <div class="calendar-date">29</div>
+            <div class="calendar-date">30</div>
+            <div class="calendar-date has-event">
+              31
+              <div class="event-indicator ongoing"></div>
+            </div>
+          </div>
+        </div> -->
+        <div class="calendar-controls">
+          <button id="calender-back">&#10094; Previous</button>
+          <h2 id="view-label">Current View</h2>
+          <button id="calender-forward">Next &#10095;</button>
+        </div>
+
+        <div class="calendar-wrapper">
+          <div id="prev-month" class="month-container"></div>
+          <div id="curr-month" class="month-container"></div>
+          <div id="next-month" class="month-container"></div>
+        </div>
+
+        <!-- Events Table -->
+        <div class="events-table-section">
+          <div class="section-header">
+            <h3>All Events</h3>
+            <div>
+              <select
+                id="statusFilter"
+                style="
+                  padding: 5px 10px;
+                  border-radius: 5px;
+                  border: 1px solid var(--light-gray);
+                "
+              >
+                <option value="all">All Status</option>
+                <option value="upcoming">Upcoming</option>
+                <option value="ongoing">Ongoing</option>
+                <option value="completed">Completed</option>
+              </select>
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAll" /></th>
+                <th>Event Name</th>
+                <th>Date & Time</th>
+                <th>Location</th>
+                <th>Tickets</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="event_table_body">
+              <!--.event-status takes second class of status-[upcoming, completed, ungoing]
+              date format is actually Oct 25, 2023 • 9:00 AM 
+              and spanning multiple days is Oct 25-26, 2023-->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Create Event Modal -->
+    <div class="modal" id="createEventModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Create New Event</h3>
+          <button class="btn btn-danger" id="closeModalBtn">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="eventForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="eventName">Event Name *</label>
+                <input
+                  type="text"
+                  id="eventName"
+                  placeholder="Enter event name"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="eventType">Event Type</label>
+                <select class="createEventCategory" id="eventType"></select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="location">Location *</label>
+                <input
+                  type="text"
+                  id="location"
+                  placeholder="Enter venue address"
+                  required
+                />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="eventDate">Event Date *</label>
+                  <input type="date" id="eventDate" required />
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="eventTime">Event Time *</label>
+                  <input type="time" id="eventTime" required />
+                </div>
+                </div>
+                <div class="form-row">
+                <div class="form-group">
+                  <label for="eventEndTime">Event End Time</label>
+                  <input type="time" id="eventEndTime" />
+                </div>
+              </div>
+              <!-- <div class="form-group">
+                <label for="organizer">Organizer</label>
+                <input
+                  type="text"
+                  id="organizer"
+                  placeholder="Event organizer"
+                />
+              </div> -->
+            </div>
+            <div class="form-row">
+              <!-- <div class="form-group">
+                <label for="maxAttendees">Max Attendees</label>
+                <input
+                  type="number"
+                  id="maxAttendees"
+                  placeholder="Maximum number of attendees"
+                />
+              </div> -->
+              <!-- <div class="form-group">
+                <label for="ticketPrice">Ticket Price ($)</label>
+                <input
+                  type="number"
+                  id="ticketPrice"
+                  placeholder="0.00"
+                  step="0.01"
+                />
+              </div> -->
+            </div>
+
+            <div class="form-group">
+              <label for="description">Event Description</label>
+              <textarea
+              id="description"
+              rows="4"
+              placeholder="Describe your event..."
+              ></textarea>
+            </div>
+            <div class="form-row">
+              <button class="btn btn-primary event-special-button">
+                <i class="fas fa-plus"></i>
+                Add Membership
+              </button>
+            </div>
+            <div class="form-row">
+              <button class="btn btn-primary event-special-button">
+                <i class="fas fa-plus"></i>
+                Add Discount
+              </button>
+            </div>
+            
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-danger" id="cancelBtn">Cancel</button>
+          <button class="btn btn-primary" id="saveEventBtn">
+            Create Event
+          </button>
+        </div>
+      </div>
+    </div>
+    <template id="template">
+      <tr id="event_row">
+        <td><input type="checkbox" class="event-checkbox" /></td>
+        <td><strong class="event_name">Tech Conference 2023</strong></td>
+        <td class="event_datetime">Oct 25, 2023 • 9:00 AM</td>
+        <td class="event_location">Convention Center</td>
+        <td class="event_attendees">240/300</td>
+        <td>
+          <span class="event-status">Upcoming</span>
+        </td>
+        <td>
+          <div class="action-icons">
+            <i class="fas fa-edit" title="Edit Event"></i>
+            <i class="fas fa-ticket-alt" title="Generate Tickets"></i>
+            <i class="fas fa-trash" title="Delete Event"></i>
+          </div>
+        </td>
+      </tr>
+    </template>
+  </body>
+</html>

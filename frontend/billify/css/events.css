@@ -1,0 +1,363 @@
+:root {
+    --event-blue: #3a86ff;
+    --event-purple: #8338ec;
+    --event-green: #38b000;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--secondary);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #3aa8d0;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #d61a6f;
+}
+
+/* Events Dashboard Cards */
+
+.upcoming .card-icon { background: rgba(58, 134, 255, 0.2); color: var(--event-blue); }
+.ongoing .card-icon { background: rgba(131, 56, 236, 0.2); color: var(--event-purple); }
+.completed .card-icon { background: rgba(56, 176, 0, 0.2); color: var(--event-green); }
+.tickets .card-icon { background: rgba(247, 37, 133, 0.2); color: var(--danger); }
+
+/* Events Calendar */
+.events-calendar {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.calendar-navigation {
+    display: flex;
+    gap: 10px;
+}
+
+.calendar-navigation button {
+    padding: 5px 10px;
+    background: var(--light);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.calendar-day {
+    padding: 10px;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: 500;
+}
+
+.calendar-date {
+    padding: 15px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.calendar-date:hover {
+    background: var(--light);
+}
+
+.calendar-date.has-event {
+    background: rgba(58, 134, 255, 0.1);
+    border: 1px solid var(--event-blue);
+}
+
+.calendar-date.today {
+    background: var(--primary);
+    color: white;
+}
+
+.event-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--event-blue);
+    margin: 0 auto;
+}
+
+.event-indicator.ongoing {
+    background: var(--event-purple);
+}
+
+.event-indicator.completed {
+    background: var(--event-green);
+}
+
+/* Events Table */
+.events-table-section {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.data-table th, .data-table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.data-table th {
+    background: var(--light);
+    font-weight: 600;
+}
+
+.data-table tr:hover {
+    background: #f8f9fa;
+}
+
+.event-status {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-upcoming {
+    background: rgba(58, 134, 255, 0.2);
+    color: var(--event-blue);
+}
+
+.status-ongoing {
+    background: rgba(131, 56, 236, 0.2);
+    color: var(--event-purple);
+}
+
+.status-completed {
+    background: rgba(56, 176, 0, 0.2);
+    color: var(--event-green);
+}
+
+.action-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.action-icons i {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.action-icons .fa-edit:hover {
+    background: rgba(76, 201, 240, 0.2);
+    color: var(--success);
+}
+
+.action-icons .fa-ticket-alt:hover {
+    background: rgba(248, 150, 30, 0.2);
+    color: var(--warning);
+}
+
+.action-icons .fa-trash:hover {
+    background: rgba(247, 37, 133, 0.2);
+    color: var(--danger);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--light-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--light-gray);
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.modal-footer {
+    padding: 20px;
+    border-top: 1px solid var(--light-gray);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+
+
+.createEventCategory option {
+    text-transform: capitalize;
+}
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .container {
+        grid-template-columns: 1fr;
+    }
+    
+    .sidebar {
+        display: none;
+    }
+    
+    .main-content {
+        grid-column: 1;
+    }
+    
+    .events-dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+        font-size: 12px;
+    }
+    
+    .calendar-date {
+        padding: 10px;
+        min-height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .events-dashboard-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+    
+    .search-bar {
+        width: 100%;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .calendar-grid {
+        grid-template-columns: repeat(7, 1fr);
+        font-size: 11px;
+    }
+}

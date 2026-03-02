@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billify - Products Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/products.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-receipt"></i> Billify</h1>
+            </div>
+            <a href="#" class="nav-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-receipt"></i> Receipts
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-exchange-alt"></i> Transactions
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Events
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-box"></i> Products
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2>Products Management</h2>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search products...">
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Inventory Manager</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="addProductBtn">
+                    <i class="fas fa-plus"></i> Add New Product
+                </button>
+                <button class="btn btn-success hide" id="importProductsBtn">
+                    <i class="fas fa-file-import"></i> Import Products
+                </button>
+                <button class="btn btn-warning hide" id="exportProductsBtn">
+                    <i class="fas fa-file-export"></i> Export Products
+                </button>
+                <button class="btn btn-danger" id="deleteSelectedBtn">
+                    <i class="fas fa-trash"></i> Delete Selected
+                </button>
+            </div>
+
+            <!-- Products Dashboard Cards -->
+            <div class="products-dashboard-cards">
+                <div class="card total-products">
+                    <div class="card-header">
+                        <div>
+                            <h3>156</h3>
+                            <p>Total Products</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                    </div>
+                    <p><i class="fas fa-arrow-up"></i> 8 new products this month</p>
+                </div>
+
+                <div class="card in-stock">
+                    <div class="card-header">
+                        <div>
+                            <h3>128</h3>
+                            <p>In Stock</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <p>82% of total products</p>
+                </div>
+
+                <div class="card low-stock">
+                    <div class="card-header">
+                        <div>
+                            <h3>18</h3>
+                            <p>Low Stock</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                    </div>
+                    <p>Needs restocking</p>
+                </div>
+
+                <div class="card out-of-stock">
+                    <div class="card-header">
+                        <div>
+                            <h3>10</h3>
+                            <p>Out of Stock</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                    </div>
+                    <p>Requires immediate attention</p>
+                </div>
+            </div>
+
+            <!-- Product Categories -->
+            <div class="product-categories">
+                <div class="categories-header">
+                    <h3>Product Categories</h3>
+                    <button class="btn btn-primary hide" id="manageCategoriesBtn">
+                        <i class="fas fa-cog"></i> Manage Categories
+                    </button>
+                </div>
+                <div class="categories-grid">
+                    <div class="category-item" data-category="electronics">
+                        <div class="category-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h4>Electronics</h4>
+                        <div class="category-count">42 products</div>
+                    </div>
+                    <div class="category-item" data-category="clothing">
+                        <div class="category-icon">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                        <h4>Clothing</h4>
+                        <div class="category-count">38 products</div>
+                    </div>
+                    <div class="category-item" data-category="books">
+                        <div class="category-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h4>Books</h4>
+                        <div class="category-count">27 products</div>
+                    </div>
+                    <div class="category-item" data-category="home">
+                        <div class="category-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h4>Home & Garden</h4>
+                        <div class="category-count">24 products</div>
+                    </div>
+                    <div class="category-item" data-category="sports">
+                        <div class="category-icon">
+                            <i class="fas fa-basketball-ball"></i>
+                        </div>
+                        <h4>Sports</h4>
+                        <div class="category-count">15 products</div>
+                    </div>
+                    <div class="category-item" data-category="other">
+                        <div class="category-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h4>Other</h4>
+                        <div class="category-count">10 products</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(0, 187, 249, 0.2); color: var(--product-teal);">
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h4>$45,280</h4>
+                        <p>Total Inventory Value</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(131, 56, 236, 0.2); color: var(--product-purple);">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h4>2,840</h4>
+                        <p>Total Items Sold</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(255, 149, 0, 0.2); color: var(--product-orange);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h4>15.8%</h4>
+                        <p>Monthly Growth</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: rgba(56, 176, 0, 0.2); color: var(--product-green);">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h4>4.7</h4>
+                        <p>Average Rating</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Table -->
+            <div class="products-table-section">
+                <div class="section-header">
+                    <h3>All Products</h3>
+                    <div>
+                        <select id="categoryFilter" style="padding: 5px 10px; border-radius: 5px; border: 1px solid var(--light-gray); margin-right: 10px;">
+                            <option value="all">All Categories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="books">Books</option>
+                            <option value="home">Home & Garden</option>
+                            <option value="sports">Sports</option>
+                        </select>
+                        <select id="stockFilter" style="padding: 5px 10px; border-radius: 5px; border: 1px solid var(--light-gray);">
+                            <option value="all">All Stock Status</option>
+                            <option value="in">In Stock</option>
+                            <option value="low">Low Stock</option>
+                            <option value="out">Out of Stock</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>Product</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" class="product-checkbox"></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="product-image">
+                                        <i class="fas fa-laptop"></i>
+                                    </div>
+                                    <div>
+                                        <strong>MacBook Pro M2</strong><br>
+                                        <small>SKU: MBPM2-2023</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Electronics</td>
+                            <td>$1,299.99</td>
+                            <td><span class="stock-status stock-in">42 in stock</span></td>
+                            <td><span class="product-rating">★★★★★</span> 4.9</td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-edit" title="Edit Product"></i>
+                                    <i class="fas fa-chart-line" title="View Analytics"></i>
+                                    <i class="fas fa-trash" title="Delete Product"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="product-checkbox"></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="product-image">
+                                        <i class="fas fa-tshirt"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Premium T-Shirt</strong><br>
+                                        <small>SKU: TSHIRT-001</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Clothing</td>
+                            <td>$24.99</td>
+                            <td><span class="stock-status stock-low">3 in stock</span></td>
+                            <td><span class="product-rating">★★★★☆</span> 4.2</td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-edit" title="Edit Product"></i>
+                                    <i class="fas fa-chart-line" title="View Analytics"></i>
+                                    <i class="fas fa-trash" title="Delete Product"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="product-checkbox"></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="product-image">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Python Programming</strong><br>
+                                        <small>SKU: BOOK-PY101</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Books</td>
+                            <td>$49.99</td>
+                            <td><span class="stock-status stock-out">Out of stock</span></td>
+                            <td><span class="product-rating">★★★★★</span> 4.8</td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-edit" title="Edit Product"></i>
+                                    <i class="fas fa-chart-line" title="View Analytics"></i>
+                                    <i class="fas fa-trash" title="Delete Product"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="product-checkbox"></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="product-image">
+                                        <i class="fas fa-mug-hot"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Ceramic Coffee Mug</strong><br>
+                                        <small>SKU: MUG-001</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Home & Garden</td>
+                            <td>$14.99</td>
+                            <td><span class="stock-status stock-in">125 in stock</span></td>
+                            <td><span class="product-rating">★★★★☆</span> 4.5</td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-edit" title="Edit Product"></i>
+                                    <i class="fas fa-chart-line" title="View Analytics"></i>
+                                    <i class="fas fa-trash" title="Delete Product"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="product-checkbox"></td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="product-image">
+                                        <i class="fas fa-basketball-ball"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Professional Basketball</strong><br>
+                                        <small>SKU: BALL-BB01</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Sports</td>
+                            <td>$29.99</td>
+                            <td><span class="stock-status stock-in">68 in stock</span></td>
+                            <td><span class="product-rating">★★★★☆</span> 4.3</td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-edit" title="Edit Product"></i>
+                                    <i class="fas fa-chart-line" title="View Analytics"></i>
+                                    <i class="fas fa-trash" title="Delete Product"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Product</h3>
+                <button class="btn btn-danger" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="productForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productName">Product Name *</label>
+                            <input type="text" id="productName" placeholder="Enter product name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sku">SKU (Stock Keeping Unit) *</label>
+                            <input type="text" id="sku" placeholder="e.g., PROD-001" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category *</label>
+                            <select id="category" required>
+                                <option value="">Select Category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="books">Books</option>
+                                <option value="home">Home & Garden</option>
+                                <option value="sports">Sports</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="price">Price ($) *</label>
+                            <input type="number" id="price" step="0.01" placeholder="0.00" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="stockQuantity">Stock Quantity *</label>
+                            <input type="number" id="stockQuantity" placeholder="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lowStockThreshold">Low Stock Threshold</label>
+                            <input type="number" id="lowStockThreshold" placeholder="10" value="10">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Product Description</label>
+                        <textarea id="description" rows="4" placeholder="Describe the product..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Product Image</label>
+                        <div class="image-upload" id="imageUploadArea">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Click to upload product image</p>
+                            <small>Supports JPG, PNG, GIF up to 5MB</small>
+                        </div>
+                        <input type="file" id="productImage" accept="image/*" style="display: none;">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="cancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveProductBtn">Save Product</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const addProductBtn = document.getElementById('addProductBtn');
+        const addProductModal = document.getElementById('addProductModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const saveProductBtn = document.getElementById('saveProductBtn');
+        const productForm = document.getElementById('productForm');
+        const imageUploadArea = document.getElementById('imageUploadArea');
+        const productImageInput = document.getElementById('productImage');
+
+        // Open modal
+        addProductBtn.addEventListener('click', () => {
+            addProductModal.style.display = 'flex';
+        });
+
+        // Close modal
+        const closeModal = () => {
+            addProductModal.style.display = 'none';
+            productForm.reset();
+        };
+
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Save product
+        saveProductBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (productForm.checkValidity()) {
+                alert('Product added successfully!');
+                closeModal();
+            } else {
+                productForm.reportValidity();
+            }
+        });
+
+        // Image upload
+        imageUploadArea.addEventListener('click', () => {
+            productImageInput.click();
+        });
+
+        productImageInput.addEventListener('change', function() {
+            if (this.files && this.files[0]) {
+                const fileName = this.files[0].name;
+                imageUploadArea.innerHTML = `
+                    <i class="fas fa-check-circle" style="color: var(--product-green);"></i>
+                    <p>${fileName}</p>
+                    <small>Click to change</small>
+                `;
+            }
+        });
+
+        // Select all checkboxes
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const productCheckboxes = document.querySelectorAll('.product-checkbox');
+
+        selectAllCheckbox.addEventListener('change', function() {
+            productCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        // Category filter
+        const categoryItems = document.querySelectorAll('.category-item');
+        categoryItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const category = this.dataset.category;
+                categoryFilter.value = category;
+                filterProducts();
+                
+                // Highlight selected category
+                categoryItems.forEach(cat => cat.style.borderColor = 'var(--light-gray)');
+                this.style.borderColor = 'var(--primary)';
+            });
+        });
+
+        // Filter products
+        const categoryFilter = document.getElementById('categoryFilter');
+        const stockFilter = document.getElementById('stockFilter');
+        
+        function filterProducts() {
+            const categoryValue = categoryFilter.value;
+            const stockValue = stockFilter.value;
+            const rows = document.querySelectorAll('.data-table tbody tr');
+            
+            rows.forEach(row => {
+                const rowCategory = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                const stockElement = row.querySelector('.stock-status');
+                let stockStatus = '';
+                
+                if (stockElement.classList.contains('stock-in')) stockStatus = 'in';
+                else if (stockElement.classList.contains('stock-low')) stockStatus = 'low';
+                else if (stockElement.classList.contains('stock-out')) stockStatus = 'out';
+                
+                const categoryMatch = categoryValue === 'all' || rowCategory === categoryValue;
+                const stockMatch = stockValue === 'all' || stockStatus === stockValue;
+                
+                row.style.display = (categoryMatch && stockMatch) ? '' : 'none';
+            });
+        }
+        
+        categoryFilter.addEventListener('change', filterProducts);
+        stockFilter.addEventListener('change', filterProducts);
+
+        // Delete product action
+        const deleteIcons = document.querySelectorAll('.fa-trash');
+        deleteIcons.forEach(icon => {
+            icon.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete this product?')) {
+                    const row = this.closest('tr');
+                    row.style.opacity = '0.5';
+                    setTimeout(() => {
+                        row.remove();
+                    }, 500);
+                }
+            });
+        });
+
+        // Edit product action
+        const editIcons = document.querySelectorAll('.fa-edit');
+        editIcons.forEach(icon => {
+            icon.addEventListener('click', function() {
+                const row = this.closest('tr');
+                const productName = row.querySelector('strong').textContent;
+                const sku = row.querySelector('small').textContent.split(': ')[1];
+                
+                // Populate modal with product data
+                document.getElementById('productName').value = productName;
+                document.getElementById('sku').value = sku;
+                
+                // Change modal to edit mode
+                document.querySelector('.modal-header h3').textContent = 'Edit Product';
+                document.getElementById('saveProductBtn').textContent = 'Update Product';
+                
+                addProductModal.style.display = 'flex';
+            });
+        });
+
+        // Delete selected products
+        const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+        deleteSelectedBtn.addEventListener('click', () => {
+            const selectedProducts = document.querySelectorAll('.product-checkbox:checked');
+            if (selectedProducts.length === 0) {
+                alert('Please select at least one product to delete.');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete ${selectedProducts.length} selected product(s)?`)) {
+                selectedProducts.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    row.style.opacity = '0.5';
+                    setTimeout(() => {
+                        row.remove();
+                    }, 500);
+                });
+            }
+        });
+
+        // Import/Export buttons
+        document.getElementById('importProductsBtn').addEventListener('click', () => {
+            alert('Import products feature would open file dialog');
+        });
+
+        document.getElementById('exportProductsBtn').addEventListener('click', () => {
+            alert('Exporting products to CSV...');
+        });
+
+        document.getElementById('manageCategoriesBtn').addEventListener('click', () => {
+            alert('Opening category management...');
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === addProductModal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

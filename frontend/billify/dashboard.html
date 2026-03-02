@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Billify - Management Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+    <script src="js/dashboard.js" defer></script>
+    <script src="js/common.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="logo">
+          <h1><i class="fas fa-receipt"></i> Billify</h1>
+        </div>
+        <a href="#" class="nav-item active">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-receipt"></i> Receipts
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-exchange-alt"></i> Transactions
+        </a>
+        <a href="/events.html" class="nav-item">
+          <i class="fas fa-calendar-alt"></i> Events
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-box"></i> Products </a>
+        <a href="#" class="nav-item"> <i class="fas fa-cog"></i> Settings </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+        <div class="header" id="page_header">
+          <h2>Dashboard Overview</h2>
+          <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" placeholder="Search..." />
+          </div>
+          <div class="user-info">
+            <div class="notifications">
+              <i class="fas fa-bell"></i>
+            </div>
+            <div class="user-avatar">JD</div>
+            <div class="user-details">
+              <h4 class="user-name">John Doe</h4>
+              <p class="user-role">Admin</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="dashboard-cards" id="dashboard_cards">
+          <div class="card receipts" id="receipts_summary">
+            <div class="card-header">
+              <div>
+                <h3 class="count">142</h3>
+                <p>Receipts and Ticket</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-receipt"></i>
+              </div>
+            </div>
+            <p><i class="fas fa-arrow-up"></i> 12% increase this month</p>
+          </div>
+
+          <div class="card transactions" id="transactions_summary">
+            <div class="card-header">
+              <div>
+                <h3>
+                  <span class="currency"></span
+                  ><span class="count">856,420</span>
+                </h3>
+                <p>Transactions</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-exchange-alt"></i>
+              </div>
+            </div>
+            <p><i class="fas fa-arrow-up"></i> 8% increase this month</p>
+          </div>
+
+          <div class="card events" id="events_summary">
+            <div class="card-header">
+              <div>
+                <h3 class="count">8</h3>
+                <p>Events</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+            </div>
+            <p><i class="fas fa-arrow-up"></i> 2 new events this week</p>
+          </div>
+
+          <div class="card products" id="products_summary">
+            <div class="card-header">
+              <div>
+                <h3 class="count">56</h3>
+                <p>Products</p>
+              </div>
+              <div class="card-icon">
+                <i class="fas fa-box"></i>
+              </div>
+            </div>
+            <p><i class="fas fa-arrow-down"></i> 3 products out of stock</p>
+          </div>
+        </div>
+
+        <!-- Recent Transactions -->
+        <div class="content-section">
+          <div class="section-header">
+            <h3>Recent Transactions</h3>
+            <div>
+            <select
+              id="statusFilter" class="filter" data-id="transactions"
+              style="
+                padding: 5px 10px;
+                border-radius: 5px;
+                border: 1px solid var(--light-gray);
+              "
+            >
+              <option value="all">All Status</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+            </select>
+            <button class="btn btn-primary">View All</button></div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="transactions">
+              <!--<tr>
+                            <td>#TR-01234</td>
+                            <td>John Smith</td>
+                            <td>Oct 12, 2023</td>
+                            <td>₦42,800</td>
+                            <td><span class="status status-completed">Completed</span></td>
+                        </tr> -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Upcoming Events -->
+        <div class="content-section">
+          <div class="section-header">
+            <h3>Upcoming Events</h3>
+            <button class="btn btn-primary">Create Event</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Event Name</th>
+                <th>Date</th>
+                <th>Location</th>
+                <th>Attendees</th>
+              </tr>
+            </thead>
+            <tbody id="upcoming_events">
+              <!--- <tr>
+                            <td>Product Launch</td>
+                            <td>Oct 25, 2023</td>
+                            <td>Lagos</td>
+                            <td>120</td> -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

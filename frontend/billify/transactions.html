@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billify - Transactions Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #f8961e;
+            --info: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --income: #38b000;
+            --expense: #ff4500;
+            --pending: #ff9500;
+            --refunded: #8338ec;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--dark);
+            color: white;
+            padding: 20px 0;
+            position: fixed;
+            width: 250px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo h1 {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--success);
+        }
+        
+        .nav-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item:hover, .nav-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--success);
+        }
+        
+        /* Main Content */
+        .main-content {
+            grid-column: 2;
+            padding: 20px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 8px 15px;
+            width: 300px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .search-bar input {
+            border: none;
+            outline: none;
+            padding: 5px 10px;
+            width: 100%;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+        
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #3aa8d0;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #d67c00;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #d61a6f;
+        }
+        
+        /* Transactions Dashboard Cards */
+        .transactions-dashboard-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        
+        .total-income .card-icon { background: rgba(56, 176, 0, 0.2); color: var(--income); }
+        .total-expenses .card-icon { background: rgba(255, 69, 0, 0.2); color: var(--expense); }
+        .pending .card-icon { background: rgba(255, 149, 0, 0.2); color: var(--pending); }
+        .net-balance .card-icon { background: rgba(67, 97, 238, 0.2); color: var(--primary); }
+        
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .card p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Quick Filters */
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 15px;
+            border: 1px solid var(--light-gray);
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        /* Date Range Picker */
+        .date-range {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .date-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .date-input input {
+            padding: 8px 12px;
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+        }
+        
+        /* Transactions Table */
+        .transactions-table-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .data-table th, .data-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light-gray);
+        }
+        
+        .data-table th {
+            background: var(--light);
+            font-weight: 600;
+        }
+        
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .transaction-type {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .type-income {
+            background: rgba(56, 176, 0, 0.2);
+            color: var(--income);
+        }
+        
+        .type-expense {
+            background: rgba(255, 69, 0, 0.2);
+            color: var(--expense);
+        }
+        
+        .payment-status {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-completed {
+            background: rgba(56, 176, 0, 0.2);
+            color: var(--income);
+        }
+        
+        .status-pending {
+            background: rgba(255, 149, 0, 0.2);
+            color: var(--pending);
+        }
+        
+        .status-failed {
+            background: rgba(247, 37, 133, 0.2);
+            color: var(--danger);
+        }
+        
+        .status-refunded {
+            background: rgba(131, 56, 236, 0.2);
+            color: var(--refunded);
+        }
+        
+        .action-icons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .action-icons i {
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .action-icons .fa-receipt:hover {
+            background: rgba(76, 201, 240, 0.2);
+            color: var(--success);
+        }
+        
+        .action-icons .fa-edit:hover {
+            background: rgba(248, 150, 30, 0.2);
+            color: var(--warning);
+        }
+        
+        .action-icons .fa-trash:hover {
+            background: rgba(247, 37, 133, 0.2);
+            color: var(--danger);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-body {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        /* Receipt Preview Modal */
+        .receipt-preview {
+            max-width: 800px;
+        }
+        
+        .receipt-content {
+            font-family: 'Courier New', monospace;
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid var(--light-gray);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                grid-column: 1;
+            }
+            
+            .transactions-dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .transactions-dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .date-range {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1><i class="fas fa-receipt"></i> Billify</h1>
+            </div>
+            <a href="#" class="nav-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-exchange-alt"></i> Transactions
+            </a>
+            <a href="receipts.html" class="nav-item">
+                <i class="fas fa-receipt"></i> Receipts
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-calendar-alt"></i> Events
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-box"></i> Products
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h2>Transactions Management</h2>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search transactions...">
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="user-avatar">JD</div>
+                    <div class="user-details">
+                        <h4>John Doe</h4>
+                        <p>Account Manager</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary" id="addTransactionBtn">
+                    <i class="fas fa-plus"></i> Add Transaction
+                </button>
+                <button class="btn btn-success" id="generateReceiptsBtn">
+                    <i class="fas fa-file-pdf"></i> Generate Receipts
+                </button>
+                <button class="btn btn-warning" id="exportBtn">
+                    <i class="fas fa-file-export"></i> Export Data
+                </button>
+                <button class="btn btn-danger" id="deleteSelectedBtn">
+                    <i class="fas fa-trash"></i> Delete Selected
+                </button>
+            </div>
+
+            <!-- Transactions Dashboard Cards -->
+            <div class="transactions-dashboard-cards">
+                <div class="card total-income">
+                    <div class="card-header">
+                        <div>
+                            <h3>$42,850</h3>
+                            <p>Total Income</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-arrow-down"></i>
+                        </div>
+                    </div>
+                    <p><i class="fas fa-arrow-up"></i> 15% from last month</p>
+                </div>
+
+                <div class="card total-expenses">
+                    <div class="card-header">
+                        <div>
+                            <h3>$18,240</h3>
+                            <p>Total Expenses</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                    </div>
+                    <p><i class="fas fa-arrow-down"></i> 8% from last month</p>
+                </div>
+
+                <div class="card pending">
+                    <div class="card-header">
+                        <div>
+                            <h3>$5,620</h3>
+                            <p>Pending</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                    </div>
+                    <p>12 pending transactions</p>
+                </div>
+
+                <div class="card net-balance">
+                    <div class="card-header">
+                        <div>
+                            <h3>$24,610</h3>
+                            <p>Net Balance</p>
+                        </div>
+                        <div class="card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <p>Positive cash flow</p>
+                </div>
+            </div>
+
+            <!-- Quick Filters -->
+            <div class="quick-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="income">Income</button>
+                <button class="filter-btn" data-filter="expense">Expense</button>
+                <button class="filter-btn" data-filter="today">Today</button>
+                <button class="filter-btn" data-filter="week">This Week</button>
+                <button class="filter-btn" data-filter="month">This Month</button>
+                <button class="filter-btn" data-filter="pending">Pending</button>
+                <button class="filter-btn" data-filter="completed">Completed</button>
+            </div>
+
+            <!-- Date Range -->
+            <div class="date-range">
+                <span>Filter by Date:</span>
+                <div class="date-input">
+                    <label>From:</label>
+                    <input type="date" id="dateFrom" value="2023-10-01">
+                </div>
+                <div class="date-input">
+                    <label>To:</label>
+                    <input type="date" id="dateTo" value="2023-10-31">
+                </div>
+                <button class="btn btn-primary" id="applyDateFilter">Apply</button>
+                <button class="btn btn-danger" id="resetDateFilter">Reset</button>
+            </div>
+
+            <!-- Transactions Table -->
+            <div class="transactions-table-section">
+                <div class="section-header">
+                    <h3>All Transactions</h3>
+                    <div>
+                        <select id="typeFilter" style="padding: 5px 10px; border-radius: 5px; border: 1px solid var(--light-gray); margin-right: 10px;">
+                            <option value="all">All Types</option>
+                            <option value="income">Income</option>
+                            <option value="expense">Expense</option>
+                        </select>
+                        <select id="statusFilter" style="padding: 5px 10px; border-radius: 5px; border: 1px solid var(--light-gray);">
+                            <option value="all">All Status</option>
+                            <option value="completed">Completed</option>
+                            <option value="pending">Pending</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAll"></th>
+                            <th>Transaction ID</th>
+                            <th>Description</th>
+                            <th>Type</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" class="transaction-checkbox"></td>
+                            <td><strong>TRX-2023-001</strong></td>
+                            <td>Web Development Project Payment</td>
+                            <td><span class="transaction-type type-income">Income</span></td>
+                            <td><strong>$5,000.00</strong></td>
+                            <td>Oct 15, 2023</td>
+                            <td><span class="payment-status status-completed">Completed</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-receipt generate-receipt" title="Generate Receipt" data-id="TRX-2023-001"></i>
+                                    <i class="fas fa-edit" title="Edit Transaction"></i>
+                                    <i class="fas fa-trash" title="Delete Transaction"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="transaction-checkbox"></td>
+                            <td><strong>TRX-2023-002</strong></td>
+                            <td>Office Rent Payment</td>
+                            <td><span class="transaction-type type-expense">Expense</span></td>
+                            <td><strong>$2,500.00</strong></td>
+                            <td>Oct 18, 2023</td>
+                            <td><span class="payment-status status-completed">Completed</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-receipt generate-receipt" title="Generate Receipt" data-id="TRX-2023-002"></i>
+                                    <i class="fas fa-edit" title="Edit Transaction"></i>
+                                    <i class="fas fa-trash" title="Delete Transaction"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="transaction-checkbox"></td>
+                            <td><strong>TRX-2023-003</strong></td>
+                            <td>Consultation Services</td>
+                            <td><span class="transaction-type type-income">Income</span></td>
+                            <td><strong>$1,200.00</strong></td>
+                            <td>Oct 20, 2023</td>
+                            <td><span class="payment-status status-pending">Pending</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-receipt generate-receipt" title="Generate Receipt" data-id="TRX-2023-003"></i>
+                                    <i class="fas fa-edit" title="Edit Transaction"></i>
+                                    <i class="fas fa-trash" title="Delete Transaction"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="transaction-checkbox"></td>
+                            <td><strong>TRX-2023-004</strong></td>
+                            <td>Software Subscription</td>
+                            <td><span class="transaction-type type-expense">Expense</span></td>
+                            <td><strong>$299.99</strong></td>
+                            <td>Oct 22, 2023</td>
+                            <td><span class="payment-status status-completed">Completed</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-receipt generate-receipt" title="Generate Receipt" data-id="TRX-2023-004"></i>
+                                    <i class="fas fa-edit" title="Edit Transaction"></i>
+                                    <i class="fas fa-trash" title="Delete Transaction"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox" class="transaction-checkbox"></td>
+                            <td><strong>TRX-2023-005</strong></td>
+                            <td>Product Sales - Q3</td>
+                            <td><span class="transaction-type type-income">Income</span></td>
+                            <td><strong>$8,750.00</strong></td>
+                            <td>Oct 25, 2023</td>
+                            <td><span class="payment-status status-completed">Completed</span></td>
+                            <td>
+                                <div class="action-icons">
+                                    <i class="fas fa-receipt generate-receipt" title="Generate Receipt" data-id="TRX-2023-005"></i>
+                                    <i class="fas fa-edit" title="Edit Transaction"></i>
+                                    <i class="fas fa-trash" title="Delete Transaction"></i>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Transaction Modal -->
+    <div class="modal" id="transactionModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Transaction</h3>
+                <button class="btn btn-danger" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="transactionForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="transactionType">Transaction Type *</label>
+                            <select id="transactionType" required>
+                                <option value="">Select Type</option>
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount">Amount ($) *</label>
+                            <input type="number" id="amount" step="0.01" placeholder="0.00" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="transactionDate">Date *</label>
+                            <input type="date" id="transactionDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="paymentMethod">Payment Method</label>
+                            <select id="paymentMethod">
+                                <option value="cash">Cash</option>
+                                <option value="card">Credit/Debit Card</option>
+                                <option value="bank">Bank Transfer</option>
+                                <option value="check">Check</option>
+                                <option value="digital">Digital Wallet</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <input type="text" id="description" placeholder="Enter transaction description" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category">
+                                <option value="sales">Sales</option>
+                                <option value="services">Services</option>
+                                <option value="rent">Rent</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="supplies">Supplies</option>
+                                <option value="salary">Salary</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Status</label>
+                            <select id="status">
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                                <option value="failed">Failed</option>
+                                <option value="refunded">Refunded</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="notes">Notes</label>
+                        <textarea id="notes" rows="3" placeholder="Additional notes..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="cancelBtn">Cancel</button>
+                <button class="btn btn-primary" id="saveTransactionBtn">Save Transaction</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receipt Generation Modal -->
+    <div class="modal" id="receiptModal">
+        <div class="modal-content receipt-preview">
+            <div class="modal-header">
+                <h3>Generate Receipt</h3>
+                <button class="btn btn-danger" id="closeReceiptBtn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="receipt-content">
+                    <h4 style="text-align: center; margin-bottom: 20px;">RECEIPT</h4>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                        <div>
+                            <strong>Billify Solutions Inc.</strong><br>
+                            123 Business Ave<br>
+                            San Francisco, CA 94105<br>
+                            (555) 123-4567<br>
+                            billing@billify.com
+                        </div>
+                        <div style="text-align: right;">
+                            <strong>Receipt #:</strong> <span id="receiptNumber">RCPT-2023-001</span><br>
+                            <strong>Date:</strong> <span id="receiptDate">October 26, 2023</span><br>
+                            <strong>Transaction ID:</strong> <span id="receiptTransactionId">TRX-2023-001</span>
+                        </div>
+                    </div>
+                    
+                    <hr style="border: 1px solid #ddd; margin: 20px 0;">
+                    
+                    <div style="margin-bottom: 20px;">
+                        <strong>Bill To:</strong><br>
+                        <span id="receiptCustomer">Acme Corporation</span><br>
+                        <span id="receiptCustomerAddress">456 Client Street, New York, NY 10001</span><br>
+                        <span id="receiptCustomerPhone">(555) 987-6543</span>
+                    </div>
+                    
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid #000;">
+                                <th style="text-align: left; padding: 10px 0;">Description</th>
+                                <th style="text-align: right; padding: 10px 0;">Quantity</th>
+                                <th style="text-align: right; padding: 10px 0;">Unit Price</th>
+                                <th style="text-align: right; padding: 10px 0;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="receiptItems">
+                            <!-- Items will be populated by JavaScript -->
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" style="text-align: right; padding: 10px 0;">Subtotal:</td>
+                                <td style="text-align: right; padding: 10px 0;" id="receiptSubtotal">$0.00</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="text-align: right; padding: 10px 0;">Tax (8%):</td>
+                                <td style="text-align: right; padding: 10px 0;" id="receiptTax">$0.00</td>
+                            </tr>
+                            <tr style="border-top: 2px solid #000;">
+                                <td colspan="3" style="text-align: right; padding: 10px 0; font-weight: bold;">Total:</td>
+                                <td style="text-align: right; padding: 10px 0; font-weight: bold;" id="receiptTotal">$0.00</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px dashed #ddd;">
+                        <p><strong>Payment Method:</strong> <span id="receiptPaymentMethod">Credit Card</span></p>
+                        <p><strong>Payment Status:</strong> <span id="receiptPaymentStatus">Paid</span></p>
+                        <p><strong>Notes:</strong> <span id="receiptNotes">Thank you for your business!</span></p>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 40px; font-size: 12px; color: #666;">
+                        <p>This is a computer-generated receipt. No signature required.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="cancelReceiptBtn">Cancel</button>
+                <button class="btn btn-success" id="downloadReceiptBtn">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button class="btn btn-primary" id="printReceiptBtn">
+                    <i class="fas fa-print"></i> Print Receipt
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality
+        const addTransactionBtn = document.getElementById('addTransactionBtn');
+        const transactionModal = document.getElementById('transactionModal');
+        const receiptModal = document.getElementById('receiptModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const closeReceiptBtn = document.getElementById('closeReceiptBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const cancelReceiptBtn = document.getElementById('cancelReceiptBtn');
+        const saveTransactionBtn = document.getElementById('saveTransactionBtn');
+        const transactionForm = document.getElementById('transactionForm');
+        const generateReceiptsBtn = document.getElementById('generateReceiptsBtn');
+        const downloadReceiptBtn = document.getElementById('downloadReceiptBtn');
+        const printReceiptBtn = document.getElementById('printReceiptBtn');
+        const generateReceiptIcons = document.querySelectorAll('.generate-receipt');
+
+        // Set today's date as default
+        document.getElementById('transactionDate').valueAsDate = new Date();
+
+        // Open add transaction modal
+        addTransactionBtn.addEventListener('click', () => {
+            transactionModal.style.display = 'flex';
+        });
+
+        // Close modals
+        const closeTransactionModal = () => {
+            transactionModal.style.display = 'none';
+            transactionForm.reset();
+            document.getElementById('transactionDate').valueAsDate = new Date();
+        };
+
+        const closeReceiptModal = () => {
+            receiptModal.style.display = 'none';
+        };
+
+        closeModalBtn.addEventListener('click', closeTransactionModal);
+        closeReceiptBtn.addEventListener('click', closeReceiptModal);
+        cancelBtn.addEventListener('click', closeTransactionModal);
+        cancelReceiptBtn.addEventListener('click', closeReceiptModal);
+
+        // Save transaction
+        saveTransactionBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (transactionForm.checkValidity()) {
+                alert('Transaction added successfully!');
+                closeTransactionModal();
+            } else {
+                transactionForm.reportValidity();
+            }
+        });
+
+        // Generate receipt for single transaction
+        generateReceiptIcons.forEach(icon => {
+            icon.addEventListener('click', function() {
+                const transactionId = this.getAttribute('data-id');
+                openReceiptModal(transactionId);
+            });
+        });
+
+        // Generate receipts for multiple transactions
+        generateReceiptsBtn.addEventListener('click', () => {
+            const selectedTransactions = document.querySelectorAll('.transaction-checkbox:checked');
+            if (selectedTransactions.length === 0) {
+                alert('Please select at least one transaction to generate receipts.');
+                return;
+            }
+            
+            if (selectedTransactions.length === 1) {
+                // Single receipt
+                const transactionId = selectedTransactions[0].closest('tr').querySelector('strong').textContent;
+                openReceiptModal(transactionId);
+            } else {
+                // Bulk receipt generation
+                if (confirm(`Generate receipts for ${selectedTransactions.length} selected transactions?`)) {
+                    // In real implementation, this would call your PDF generator
+                    alert(`Generating ${selectedTransactions.length} receipts... This would download a ZIP file with all receipts.`);
+                }
+            }
+        });
+
+        // Function to open receipt modal with data
+        function openReceiptModal(transactionId) {
+            // Get transaction data (in real app, this would come from backend)
+            const transactionData = {
+                id: transactionId,
+                date: 'October 26, 2023',
+                customer: 'Acme Corporation',
+                customerAddress: '456 Client Street, New York, NY 10001',
+                customerPhone: '(555) 987-6543',
+                items: [
+                    { description: 'Web Development Services', quantity: 1, unitPrice: 5000.00, total: 5000.00 },
+                    { description: 'UI/UX Design', quantity: 1, unitPrice: 1500.00, total: 1500.00 }
+                ],
+                subtotal: 6500.00,
+                tax: 520.00,
+                total: 7020.00,
+                paymentMethod: 'Bank Transfer',
+                paymentStatus: 'Paid',
+                notes: 'Thank you for your business!'
+            };
+
+            // Populate receipt modal
+            document.getElementById('receiptNumber').textContent = `RCPT-${new Date().getFullYear()}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`;
+            document.getElementById('receiptDate').textContent = transactionData.date;
+            document.getElementById('receiptTransactionId').textContent = transactionData.id;
+            document.getElementById('receiptCustomer').textContent = transactionData.customer;
+            document.getElementById('receiptCustomerAddress').textContent = transactionData.customerAddress;
+            document.getElementById('receiptCustomerPhone').textContent = transactionData.customerPhone;
+            
+            // Populate items
+            const itemsContainer = document.getElementById('receiptItems');
+            itemsContainer.innerHTML = '';
+            transactionData.items.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="padding: 8px 0;">${item.description}</td>
+                    <td style="text-align: right; padding: 8px 0;">${item.quantity}</td>
+                    <td style="text-align: right; padding: 8px 0;">$${item.unitPrice.toFixed(2)}</td>
+                    <td style="text-align: right; padding: 8px 0;">$${item.total.toFixed(2)}</td>
+                `;
+                itemsContainer.appendChild(row);
+            });
+
+            // Populate totals
+            document.getElementById('receiptSubtotal').textContent = `$${transactionData.subtotal.toFixed(2)}`;
+            document.getElementById('receiptTax').textContent = `$${transactionData.tax.toFixed(2)}`;
+            document.getElementById('receiptTotal').textContent = `$${transactionData.total.toFixed(2)}`;
+            document.getElementById('receiptPaymentMethod').textContent = transactionData.paymentMethod;
+            document.getElementById('receiptPaymentStatus').textContent = transactionData.paymentStatus;
+            document.getElementById('receiptNotes').textContent = transactionData.notes;
+
+            // Show modal
+            receiptModal.style.display = 'flex';
+        }
+
+        // Download PDF receipt
+        downloadReceiptBtn.addEventListener('click', () => {
+            alert('Downloading PDF receipt... This would call your PDF generator backend.');
+            // In real implementation:
+            // 1. Collect data from receipt modal
+            // 2. Send to Django backend
+            // 3. Generate PDF using your PDFInvoiceGenerator class
+            // 4. Return PDF for download
+        });
+
+        // Print receipt
+        printReceiptBtn.addEventListener('click', () => {
+            window.print();
+        });
+
+        // Select all checkboxes
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const transactionCheckboxes = document.querySelectorAll('.transaction-checkbox');
+
+        selectAllCheckbox.addEventListener('change', function() {
+            transactionCheckboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+
+        // Quick filters
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                
+                // Update active state
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Apply filter (in real app, this would filter server-side)
+                alert(`Filtering by: ${filter}`);
+            });
+        });
+
+        // Apply date filter
+        document.getElementById('applyDateFilter').addEventListener('click', () => {
+            const fromDate = document.getElementById('dateFrom').value;
+            const toDate = document.getElementById('dateTo').value;
+            alert(`Filtering transactions from ${fromDate} to ${toDate}`);
+        });
+
+        // Reset date filter
+        document.getElementById('resetDateFilter').addEventListener('click', () => {
+            document.getElementById('dateFrom').value = '2023-10-01';
+            document.getElementById('dateTo').value = '2023-10-31';
+        });
+
+        // Type and status filters
+        document.getElementById('typeFilter').addEventListener('change', filterTransactions);
+        document.getElementById('statusFilter').addEventListener('change', filterTransactions);
+
+        function filterTransactions() {
+            const typeFilter = document.getElementById('typeFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+            const rows = document.querySelectorAll('.data-table tbody tr');
+            
+            rows.forEach(row => {
+                const type = row.querySelector('.transaction-type').textContent.toLowerCase();
+                const status = row.querySelector('.payment-status').textContent.toLowerCase();
+                
+                const typeMatch = typeFilter === 'all' || type === typeFilter;
+                const statusMatch = statusFilter === 'all' || status === statusFilter;
+                
+                row.style.display = (typeMatch && statusMatch) ? '' : 'none';
+            });
+        }
+
+        // Delete selected transactions
+        const deleteSelectedBtn = document.getElementById('deleteSelectedBtn');
+        deleteSelectedBtn.addEventListener('click', () => {
+            const selectedTransactions = document.querySelectorAll('.transaction-checkbox:checked');
+            if (selectedTransactions.length === 0) {
+                alert('Please select at least one transaction to delete.');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to delete ${selectedTransactions.length} selected transaction(s)?`)) {
+                selectedTransactions.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    row.style.opacity = '0.5';
+                    setTimeout(() => {
+                        row.remove();
+                    }, 500);
+                });
+            }
+        });
+
+        // Export data
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            alert('Exporting transactions data...');
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === transactionModal) {
+                closeTransactionModal();
+            }
+            if (e.target === receiptModal) {
+                closeReceiptModal();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+__pycache__/
+migrations/
+*.pyc
+*.pyo
+*.pyd
+.env
+*sqlite3*
+*.pdf
+*.log
+node_modules/
+media/
+staticfiles/

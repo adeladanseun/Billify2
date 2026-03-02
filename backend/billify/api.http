@@ -1,0 +1,65 @@
+POST http://localhost:8000/user/api/register/
+Content-Type: application/json
+
+{
+    "username": "adeladansegun",
+    "email": "jesuit@gmail.com",
+    "password": "adeladansegun"
+}
+
+####
+POST http://localhost:8000/user/api/login/
+Content-Type: application/json
+
+{
+    "username": "adeladansegun",
+    "password": "adeladansegun"
+}
+
+#####
+
+POST http://localhost:8000/user/api/register/
+Content-Type: application/json
+
+{
+    "username": "adeladanseun",
+    "email": "jesuit@gmail.com",
+    "password": "adeladanseun"
+}
+
+####
+POST http://localhost:8000/user/api/login/
+Content-Type: application/json
+
+{
+    "username": "adeladanseun",
+    "password": "adeladanseun"
+}
+
+#####
+GET http://localhost:8000/user/api/test/
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY1OTIyMzI3LCJpYXQiOjE3NjU0OTAzMjcsImp0aSI6IjhkYzZiY2Y0MmMxNTQwYTU5N2ZiOWVlYjIxZWY2OWNjIiwidXNlcl9pZCI6IjEifQ.vj6HdNj2V1ZBjs6Ry9oJULFfpsvTUJjROcrRt7DreiA
+
+###
+POST http://localhost:8000/user/api/token/refresh/
+Content-Type: application/json
+
+{
+    "refresh": ""
+}
+
+####
+POST http://localhost:8000/user/api/logout/
+Content-Type: application/json
+
+{
+"refresh": ""
+}
+
+###
+GET http://localhost:8000/product/api/detail/2/
+
+###
+GET http://localhost:8000/event/dashboard/
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3MjcxNzk0LCJpYXQiOjE3NjU5NzU3OTQsImp0aSI6IjA3Nzk4YjE0M2E4ZjQyMDM4MGEwYjRiOTYyODAxOTc0IiwidXNlcl9pZCI6IjEifQ.4yBA5QFFk-lC3OYiUIpcxCgExW3Vs-SirL5IuPCZhRs
