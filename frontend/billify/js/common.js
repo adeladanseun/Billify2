@@ -17,12 +17,25 @@ function setDateObject(object) {
 async function getDashboardData() {
   const request = await fetch(`${domain}${dashboard_url}`, {
     headers: {
-      Authorization:
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzY3MjcxNzk0LCJpYXQiOjE3NjU5NzU3OTQsImp0aSI6IjA3Nzk4YjE0M2E4ZjQyMDM4MGEwYjRiOTYyODAxOTc0IiwidXNlcl9pZCI6IjEifQ.4yBA5QFFk-lC3OYiUIpcxCgExW3Vs-SirL5IuPCZhRs",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
   });
+
+  // 1. Check if the response status is in the 200-299 range
+  if (!request.ok) {
+    console.error(`Request failed with status: ${request.status}`);
+
+    // 1. Capture the current path and any existing query parameters
+    const currentPath = window.location.pathname + window.location.search;
+
+    // 2. Reroute to login with the 'next' parameter encoded
+    window.location.href = `/auth/html/login.html?next=${encodeURIComponent(currentPath)}`;
+    return;
+  }
+
   const response = await request.json();
   console.log(response);
+
   const user_info = [...page_header.querySelector(".user-details").children];
   user_info.forEach((element) => {
     if (element.classList.contains("user-name")) {
@@ -32,28 +45,26 @@ async function getDashboardData() {
     }
   });
   if (response.events) {
-    response.events.forEach(setDateObject)
+    response.events.forEach(setDateObject);
   }
   if (response.products) {
-    response.products.forEach(setDateObject)
+    response.products.forEach(setDateObject);
   }
   if (response.purchases) {
-    response.purchases.forEach(setDateObject)
+    response.purchases.forEach(setDateObject);
   }
   if (response.event_transactions) {
-    response.event_transactions.forEach(setDateObject)
+    response.event_transactions.forEach(setDateObject);
   }
   if (response.product_transactions) {
     response.product_transactions.forEach(setDateObject);
   }
   if (response.upcoming_event) {
-    response.upcoming_event.forEach(setDateObject)
+    response.upcoming_event.forEach(setDateObject);
   }
 
-
-
   populateDashboard(response);
-  activateFilters()
+  activateFilters();
 }
 
 function naturalise_id(id) {

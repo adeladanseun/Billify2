@@ -14,7 +14,8 @@ urlpatterns = [
     path('api/test/', TestReturnAuth.as_view()),
 
 
-    path('dashboard/', DashboardView.as_view()),
+    path('dashboard/', DashboardView.as_view()), #remake to be company specific and require company id in url or body
+    path('api/profile/', UserProfileView.as_view()),
     
     
 ]

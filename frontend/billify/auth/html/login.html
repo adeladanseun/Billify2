@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billify - Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <script src="/js/essential.js"> </script>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="logo">
+                    <h1><i class="fas fa-receipt"></i> Billify</h1>
+                </div>
+                <p>Welcome back! Please login.</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username / Email</label>
+                    <input type="text" id="username" class="form-control" required placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" class="form-control" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="btn btn-primary auth-btn">Login</button>
+            </form>
+
+            <div class="auth-footer">
+                Don't have an account? <a href="signup.html">Sign Up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="js/common.js"></script> -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Logic to fetch the 'next' parameter from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const nextPath = urlParams.get('next') || '/profile.html';
+
+            const payload = {
+                username: e.target.username.value,
+                password: e.target.password.value
+            };
+
+            try {
+                const response = await fetch(`${DOMAIN}/user/api/login/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    // Store token (assuming your common.js expects it in localStorage)
+                    localStorage.setItem('access_token', data.access); 
+                    
+                    // Redirect to the intended destination
+                    window.location.href = nextPath;
+                } else {
+                    alert('Invalid credentials. Please try again.');
+                }
+            } catch (err) {
+                console.error("Login Error:", err);
+            }
+        });
+    </script>
+</body>
+</html>

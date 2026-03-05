@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Billify - User Profile</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <script src="js/profile.js" defer></script>
+    <script src="js/common.js" defer></script>
+    <script src="js/essential.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <div class="logo">
+          <h1><i class="fas fa-receipt"></i> Billify</h1>
+        </div>
+        <a href="dashboard.html" class="nav-item">
+          <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-receipt"></i> Receipts
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-exchange-alt"></i> Transactions
+        </a>
+        <a href="events.html" class="nav-item">
+          <i class="fas fa-calendar-alt"></i> Events
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-box"></i> Products </a>
+        <a href="#" class="nav-item"> <i class="fas fa-cog"></i> Settings </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+      </div>
+      <div class="main-content">
+        <div class="header">
+          <h2>User Profile</h2>
+        </div>
+        <div class="profile-card">
+          <div class="profile-avatar" id="profile_avatar">U</div>
+          <div class="profile-details">
+            <h3 id="profile_name">Username</h3>
+            <p id="profile_email">user@email.com</p>
+            <div class="profile-meta">
+              <span id="profile_fullname">Full Name</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-section">
+          <h3>Company Memberships</h3>
+          <div id="company_memberships">
+            <!-- Company info will be injected here -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -7,7 +7,7 @@ class IsOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.owner == request.user
 
-class CompanyListCreateView(generics.ListCreateAPIView):
+class CompanyListCreateView(generics.ListCreateAPIView): #company registration
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
     permission_classes = [IsAuthenticated]

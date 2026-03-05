@@ -90,16 +90,16 @@ WSGI_APPLICATION = 'billify.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'secondary': {
+    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Billify',
+        'NAME': 'billify',
         'USER': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
         'PASSWORD': 'adeladanseun',
     },
     
-    'default': {
+    'secondary': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },

@@ -92,6 +92,8 @@ navItems.forEach((item) => {
   });
 });
 //fetch data from backend
+
+
 function populateDashboard(response) {
   
 
