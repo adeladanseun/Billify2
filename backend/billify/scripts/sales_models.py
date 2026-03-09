@@ -5,7 +5,7 @@ def run(*args):
     company.delete()
 
     newCompany = Company.objects.create(
-        name = "Seun Company",
+        name = "Segun Company",
     )
-    adeladanseun = User.objects.get_or_create(username="adeladanseun")[0]
+    adeladanseun = User.objects.get_or_create(username="adeladansegun")[0]
     newCompany.staffs.add(adeladanseun)

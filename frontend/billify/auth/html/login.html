@@ -62,6 +62,7 @@
                     const data = await response.json();
                     // Store token (assuming your common.js expects it in localStorage)
                     localStorage.setItem('access_token', data.access); 
+                    localStorage.setItem('refresh_token', data.refresh);
                     
                     // Redirect to the intended destination
                     window.location.href = nextPath;

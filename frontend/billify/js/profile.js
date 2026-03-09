@@ -1,8 +1,14 @@
 // Fetch user profile info from API
-  fetch(`${DOMAIN}/user/api/profile/`)
+  fetch(`${DOMAIN}/user/api/profile/`, {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+    },
+  })
     .then((response) => response.json())
     .then((data) => {
-      // Set user info
+      // Set user info 
       document.getElementById("profile_name").textContent = data.username || "";
       document.getElementById("profile_email").textContent = data.email || "";
       document.getElementById("profile_fullname").textContent =
