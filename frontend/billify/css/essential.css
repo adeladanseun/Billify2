@@ -1,0 +1,35 @@
+@keyframes slide_into_frame {
+    50% {
+        top: 0px;
+    }
+    100% {
+        top: -100px;
+    }
+}
+.popup_message {
+    position: absolute;
+    top: -100px; 
+    margin: 0 auto;
+    animation-name: slide_into_frame;
+    animation-timing-function: ease-in-out;
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border: 4px solid;
+    border-radius: 5px;
+}
+
+.popup_message.priority_low {
+    animation-duration: 4s;
+}
+
+.popup_message.priority_urgent {
+    animation-duration: 4s;
+}
+
+.popup_message.status_positive {
+    border-color: green;
+}
+.popup_message.status_negative {
+    border-color: red;
+}

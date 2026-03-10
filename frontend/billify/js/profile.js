@@ -6,7 +6,15 @@
       Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok){
+        DISPLAY_MESSAGE("Failed to fetch, redirecting to login", priority="low", status="negative");
+        setTimeout(() => {
+          REDIRECT_TO_LOGIN();
+        }, 6000)
+      }
+      return response.json()
+    })
     .then((data) => {
       // Set user info 
       document.getElementById("profile_name").textContent = data.username || "";
@@ -45,4 +53,4 @@
         "Error loading profile";
       document.getElementById("company_memberships").innerHTML =
         '<p style="color:var(--danger)">Could not load company info.</p>';
-    });
+      });
